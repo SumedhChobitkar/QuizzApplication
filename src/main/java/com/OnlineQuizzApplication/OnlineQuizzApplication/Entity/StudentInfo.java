@@ -2,6 +2,7 @@ package com.OnlineQuizzApplication.OnlineQuizzApplication.Entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -48,7 +49,9 @@ public class StudentInfo {
 @NotBlank(message = "interest_domains is mandatory")
     private String interestDomain;
 
-
+    @OneToOne(mappedBy = "studentInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "studentInfo")
+    private QuizSubmission quizSubmission;
 
 }
 
