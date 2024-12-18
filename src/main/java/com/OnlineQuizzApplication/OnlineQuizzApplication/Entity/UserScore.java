@@ -29,14 +29,16 @@ public class UserScore {
     @Pattern(regexp = "\\d{10}", message = "Phone number should be 10 digits")
     private String contactNo;
 
-    private int score; // Calculated score based on correct answers
+    private int score;
 
-    private int attemptQuestions; // Total number of attempted questions
+    private int attemptQuestions;
 
-    private int correctAnswers; // Number of correct answers
+    private int correctAnswers;
 
-    @Enumerated(EnumType.STRING) // Save the enum as a string in the database
-    private Status status; // Enum for Pass/Fail
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    private String domain;
 
 
 }
