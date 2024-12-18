@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/questions")
+@RequestMapping("/api")
 @CrossOrigin("*")
 public class QuestionController {
     private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
@@ -21,35 +21,35 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping
+    @GetMapping("/questions")
     public ResponseEntity<List<Question>> getQuestions() {
         logger.info("Fetching all questions");
         List<Question> questions = questionService.getAllQuestions();
         return ResponseEntity.ok(questions);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/questions/{id}")
     public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
         logger.info("Fetching question with ID: {}", id);
         Question question = questionService.getQuestionById(id);
         return ResponseEntity.ok(question);
     }
 
-    @PostMapping
+    @PostMapping("/questions")
     public ResponseEntity<Question> createQuestion(@RequestBody Question question) {
         logger.info("Creating new question: {}", question.getQuestionText());
         Question savedQuestion = questionService.saveQuestion(question);
         return ResponseEntity.ok(savedQuestion);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/questions/{id}")
     public ResponseEntity<Question> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
         logger.info("Updating question with ID: {}", id);
         Question updatedQuestion = questionService.updateQuestion(id, question);
         return ResponseEntity.ok(updatedQuestion);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/questions/{id}")
     public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
         logger.info("Deleting question with ID: {}", id);
         questionService.deleteQuestion(id);
