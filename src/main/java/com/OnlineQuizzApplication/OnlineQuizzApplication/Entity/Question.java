@@ -1,7 +1,7 @@
 package com.OnlineQuizzApplication.OnlineQuizzApplication.Entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.util.List;
 
@@ -23,6 +23,6 @@ public class Question {
 
     private String domain; // e.g., Java, Python
 
-    // Getters and Setters
+    @Enumerated(EnumType.STRING)
+    private QuestionType questionType; // LogicalReasoning, Aptitude, etc.
 }
-

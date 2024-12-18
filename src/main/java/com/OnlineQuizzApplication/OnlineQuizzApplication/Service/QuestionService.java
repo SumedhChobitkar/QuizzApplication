@@ -2,13 +2,16 @@ package com.OnlineQuizzApplication.OnlineQuizzApplication.Service;
 
 
 import com.OnlineQuizzApplication.OnlineQuizzApplication.Entity.Question;
+import com.OnlineQuizzApplication.OnlineQuizzApplication.Entity.QuestionType;
 import com.OnlineQuizzApplication.OnlineQuizzApplication.Repository.QuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -52,4 +55,32 @@ public class QuestionService {
                 .orElseThrow(() -> new RuntimeException("Question not found with ID: " + id));
         questionRepository.delete(question);
     }
+
+
+
+    public List<Question> getQuestionsByType(QuestionType questionType) {
+        try {
+            // Fetch all questions for the specified type
+            List<Question> allQuestions = questionRepository.findByQuestionType(questionType);
+
+            if (allQuestions.isEmpty()) {
+                logger.warn("No questions found for type: {}", questionType);
+            } else {
+                logger.info("Successfully retrieved {} questions of type: {}", allQuestions.size(), questionType);
+            }
+
+            // Shuffle the list to randomize the order of questions
+            Collections.shuffle(allQuestions);
+
+            // Return the first 15 shuffled questions
+            return allQuestions.stream()
+                    .limit(15)  // Limit the number of questions to 15
+                    .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            logger.error("Error fetching questions of type: {}", questionType, e);
+            throw new RuntimeException("Error fetching questions of type: " + questionType, e);
+        }
+    }
+
 }

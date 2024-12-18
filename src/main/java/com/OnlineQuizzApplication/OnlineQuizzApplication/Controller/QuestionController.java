@@ -3,10 +3,12 @@ package com.OnlineQuizzApplication.OnlineQuizzApplication.Controller;
 
 
 import com.OnlineQuizzApplication.OnlineQuizzApplication.Entity.Question;
+import com.OnlineQuizzApplication.OnlineQuizzApplication.Entity.QuestionType;
 import com.OnlineQuizzApplication.OnlineQuizzApplication.Service.QuestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +61,32 @@ public class QuestionController {
         logger.info("Deleting question with ID: {}", id);
         questionService.deleteQuestion(id);
         return ResponseEntity.ok("Question deleted successfully.");
+    }
+
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<?> getQuestionsByType(@PathVariable QuestionType type) {
+        try {
+            logger.info("Fetching questions of type: {}", type);
+            List<Question> questions = questionService.getQuestionsByType(type);
+
+            if (questions.isEmpty()) {
+                logger.warn("No questions found for type: {}", type);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No questions found for the specified type: " + type);
+            }
+
+            logger.info("Successfully fetched {} questions of type: {}", questions.size(), type);
+            return ResponseEntity.ok(questions);
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid question type: {}", type, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid question type provided: " + type);
+        } catch (Exception e) {
+            logger.error("An error occurred while fetching questions by type: {}", type, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while processing your request. Please try again later.");
+        }
     }
 
 

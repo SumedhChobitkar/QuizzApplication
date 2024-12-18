@@ -5,6 +5,8 @@ import com.OnlineQuizzApplication.OnlineQuizzApplication.Entity.StudentInfo;
 import com.OnlineQuizzApplication.OnlineQuizzApplication.Repository.StudentInfoRepository;
 import com.OnlineQuizzApplication.OnlineQuizzApplication.Service.StudentInfoService;
 import com.OnlineQuizzApplication.OnlineQuizzApplication.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Service
 public class StudentInfoServiceImpl implements StudentInfoService {
+    private final static Logger logger= LoggerFactory.getLogger(StudentInfoServiceImpl.class);
 
 
     @Autowired
@@ -23,6 +26,12 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 
 
     public StudentInfo createStudent(StudentInfo student) {
+ logger.info("Saving student "+student.getName());
+ if(repository.existsByemailId(student.getEmailId())){
+     logger.error("Email_Id already exist {}",student.getEmailId());
+     throw new RuntimeException("Email"+student.getEmailId()+" Already exist");
+ }
+        logger.info("Attempting to save new student: {}", student);
         return repository.save(student);
     }
 
