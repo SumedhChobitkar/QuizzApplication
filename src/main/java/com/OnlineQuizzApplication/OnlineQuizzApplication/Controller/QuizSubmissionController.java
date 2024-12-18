@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin("*")
+@RequestMapping("/api/quizSubmission")
+
 public class QuizSubmissionController {
 
     @Autowired
@@ -22,7 +22,8 @@ public class QuizSubmissionController {
     @Autowired
     private StudentInfoRepository studentInfoRepository;
 
-    @PostMapping("/quizSubmission/submit")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/submit")
     public ResponseEntity<?> submitQuiz(
 
             @PathVariable String domain,
@@ -41,13 +42,15 @@ public class QuizSubmissionController {
         return ResponseEntity.ok(submission);
     }
 
-    @PostMapping("/quizSubmission/result-submit")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/result-submit")
     public ResponseEntity<QuizSubmission> saveQuizResult(@RequestBody QuizSubmission quizResult) {
         QuizSubmission savedResult = quizService.saveQuizResult(quizResult);
         return ResponseEntity.ok(savedResult);
     }
 
-    @GetMapping("/quizSubmission/evaluate")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/evaluate")
     public ResponseEntity<String> evaluate(@RequestParam Long userId, @RequestParam String domain) {
         return new ResponseEntity<>(quizService.evaluateUser(userId, domain), HttpStatus.OK);
     }
