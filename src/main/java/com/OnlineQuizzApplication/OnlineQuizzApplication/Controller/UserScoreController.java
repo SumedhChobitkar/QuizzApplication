@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin("*")
+@RequestMapping("/api/userscore")
+
 public class UserScoreController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserScoreController.class);
@@ -22,7 +22,8 @@ public class UserScoreController {
     @Autowired
     private UserScoreService userScoreService;
 
-    @PostMapping("/userscore/save")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/save")
     public ResponseEntity<UserScore> saveUserScore(@RequestBody UserScore userScore) {
         try {
             logger.info("Received request to save user score: {}", userScore);
@@ -34,7 +35,8 @@ public class UserScoreController {
         }
     }
 
-    @GetMapping("/userscore/all")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/all")
     public ResponseEntity<List<UserScore>> getAllUserScores() {
         try {
             logger.info("Received request to fetch all user scores");
@@ -49,7 +51,8 @@ public class UserScoreController {
         }
     }
 
-    @GetMapping("/userscore/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/{id}")
     public ResponseEntity<UserScore> getUserScoreById(@PathVariable Long id) {
         try {
             logger.info("Received request to fetch user score by ID: {}", id);
@@ -66,7 +69,8 @@ public class UserScoreController {
         }
     }
 
-    @PutMapping("/userscore/update/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/update/{id}")
     public ResponseEntity<UserScore> updateUserScore(@PathVariable Long id, @RequestBody UserScore userScore) {
         try {
             logger.info("Received request to update user score with ID: {}", id);
@@ -78,7 +82,8 @@ public class UserScoreController {
         }
     }
 
-    @DeleteMapping("/userscore/delete/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUserScore(@PathVariable Long id) {
         try {
             logger.info("Received request to delete user score with ID: {}", id);

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin("*")
+@RequestMapping("/api/students")
+
 public class StudentInfoController {
 
     private final StudentInfoService service;
@@ -21,27 +21,32 @@ public class StudentInfoController {
         this.service = service;
     }
 
-    @PostMapping("/students")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping()
     public ResponseEntity<StudentInfo> createStudent(@Valid @RequestBody StudentInfo student) {
         return new ResponseEntity<>(service.createStudent(student), HttpStatus.CREATED);
     }
 
-    @GetMapping("/students/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/{id}")
     public ResponseEntity<StudentInfo> getStudentById(@PathVariable Long id) {
         return new ResponseEntity<>(service.getStudentById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/students")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping()
     public ResponseEntity<List<StudentInfo>> getAllStudents() {
         return new ResponseEntity<>(service.getAllStudents(), HttpStatus.OK);
     }
 
-    @PutMapping("/students/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/{id}")
     public ResponseEntity<StudentInfo> updateStudent(@PathVariable Long id, @Valid @RequestBody StudentInfo student) {
         return new ResponseEntity<>(service.updateStudent(id, student), HttpStatus.OK);
     }
 
-    @DeleteMapping("/students/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         service.deleteStudent(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
