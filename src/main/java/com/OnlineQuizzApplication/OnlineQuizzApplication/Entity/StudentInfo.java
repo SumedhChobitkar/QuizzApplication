@@ -25,6 +25,7 @@ public class StudentInfo {
 
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email is mandatory")
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$", message = "Email must be in lowercase")
     private String emailId;
 
     @Pattern(regexp = "\\d{10}", message = "Mobile number must be 10 digits")

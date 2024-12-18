@@ -26,10 +26,10 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 
 
     public StudentInfo createStudent(StudentInfo student) {
- logger.info("Saving student "+student.getName());
- if(repository.existsByemailId(student.getEmailId())){
-     logger.error("Email_Id already exist {}",student.getEmailId());
-     throw new RuntimeException("Email"+student.getEmailId()+" Already exist");
+ logger.info("Saving student "+student.getName(),student.getMono());
+ if(repository.existsByEmailId(student.getEmailId()) || repository.existsByMono(student.getMono())){
+     logger.error("Email_Id {} and mobile number {} already exist ",student.getEmailId(),student.getMono());
+     throw new RuntimeException("Email "+student.getEmailId()+" And "+student.getMono()+" Already exist .");
  }
         logger.info("Attempting to save new student: {}", student);
         return repository.save(student);
