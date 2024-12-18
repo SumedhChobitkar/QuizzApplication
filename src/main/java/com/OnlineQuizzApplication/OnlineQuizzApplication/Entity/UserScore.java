@@ -14,9 +14,9 @@ public class UserScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "name is required")
-    @Size(min = 2, max = 30, message = "name should be between 2 and 30 characters")
-    @Pattern(regexp = "^[a-zA-Z]+$", message = " name must contain only alphabetic characters")
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Name must contain only alphabetic characters")
     @Column(nullable = false, unique = true)
     private String name;
 
@@ -25,11 +25,18 @@ public class UserScore {
     @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$", message = "Email must be in lowercase")
     @Column(nullable = false, unique = true)
     private String email;
+
     @Pattern(regexp = "\\d{10}", message = "Phone number should be 10 digits")
     private String contactNo;
-    private int score; // Calculated score
-    private int attemptQuestions; // Number of attempted questions
+
+    private int score; // Calculated score based on correct answers
+
+    private int attemptQuestions; // Total number of attempted questions
+
+    private int correctAnswers; // Number of correct answers
 
     @Enumerated(EnumType.STRING) // Save the enum as a string in the database
-    private Status status; // Use enum for Pass/Fail
+    private Status status; // Enum for Pass/Fail
+
+
 }
