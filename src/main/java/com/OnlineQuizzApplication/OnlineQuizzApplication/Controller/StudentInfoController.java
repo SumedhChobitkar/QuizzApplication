@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api")
 @CrossOrigin("*")
 public class StudentInfoController {
 
@@ -21,27 +21,27 @@ public class StudentInfoController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/students")
     public ResponseEntity<StudentInfo> createStudent(@Valid @RequestBody StudentInfo student) {
         return new ResponseEntity<>(service.createStudent(student), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/students/{id}")
     public ResponseEntity<StudentInfo> getStudentById(@PathVariable Long id) {
         return new ResponseEntity<>(service.getStudentById(id), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/students")
     public ResponseEntity<List<StudentInfo>> getAllStudents() {
         return new ResponseEntity<>(service.getAllStudents(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/students/{id}")
     public ResponseEntity<StudentInfo> updateStudent(@PathVariable Long id, @Valid @RequestBody StudentInfo student) {
         return new ResponseEntity<>(service.updateStudent(id, student), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/students/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         service.deleteStudent(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
