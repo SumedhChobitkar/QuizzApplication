@@ -65,24 +65,33 @@ public class UserScoreServiceImpl implements UserScoreService {
     @Override
     public UserScore calculateScore(UserScore userScore) {
         try {
-            int calculatedScore = userScore.getCorrectAnswers() * 2;
-            userScore.setScore(calculatedScore);
+            if (userScore.getAttemptQuestions() <= 0) {
+                throw new IllegalArgumentException("Attempted questions must be greater than zero.");
+            }
 
+            double calculatedScore = (userScore.getCorrectAnswers()/ (double)userScore.getTotalQuestions())*100;
+            userScore.setScore((int)calculatedScore);
+
+            // Determine the status based on the score
             if (userScore.getScore() >= 80) {
                 userScore.setStatus(Status.PASS);
             } else {
                 userScore.setStatus(Status.FAIL);
             }
 
-
+            // Log the calculated score and status
             logger.info("Calculated score: {} and status: {}", userScore.getScore(), userScore.getStatus());
             return userScore;
-        } catch (Exception e) {
 
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid input: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
             logger.error("Error while calculating score for user: {}", e.getMessage());
             throw new RuntimeException("Error calculating score");
         }
     }
+
 
     @Override
     public Optional<UserScore> getUserScoreById(Long id) {
