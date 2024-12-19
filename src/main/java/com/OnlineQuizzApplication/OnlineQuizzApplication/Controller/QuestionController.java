@@ -64,26 +64,23 @@ public class QuestionController {
     }
 
 
-    @GetMapping("/type/{type}")
-    public ResponseEntity<?> getQuestionsByType(@PathVariable QuestionType type) {
+
+    @GetMapping("/all-types")
+    public ResponseEntity<?> getQuestionsByAllTypes() {
         try {
-            logger.info("Fetching questions of type: {}", type);
-            List<Question> questions = questionService.getQuestionsByType(type);
+            logger.info("Fetching 15 shuffled questions for each type.");
+            List<Question> questions = questionService.getQuestionsByAllTypes();
 
             if (questions.isEmpty()) {
-                logger.warn("No questions found for type: {}", type);
+                logger.warn("No questions found for the specified types.");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No questions found for the specified type: " + type);
+                        .body("No questions found for the specified types.");
             }
 
-            logger.info("Successfully fetched {} questions of type: {}", questions.size(), type);
+            logger.info("Successfully fetched questions for all types.");
             return ResponseEntity.ok(questions);
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid question type: {}", type, e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid question type provided: " + type);
         } catch (Exception e) {
-            logger.error("An error occurred while fetching questions by type: {}", type, e);
+            logger.error("An error occurred while fetching questions for all types", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while processing your request. Please try again later.");
         }
