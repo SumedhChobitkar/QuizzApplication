@@ -32,6 +32,7 @@ public class UserScore {
     private int score;
 
     private int attemptQuestions;
+    private int totalQuestions;
 
     private int correctAnswers;
 
