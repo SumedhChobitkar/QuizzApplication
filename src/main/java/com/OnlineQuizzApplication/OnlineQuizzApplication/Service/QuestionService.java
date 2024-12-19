@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,28 +59,32 @@ public class QuestionService {
 
 
 
-    public List<Question> getQuestionsByType(QuestionType questionType) {
+    public List<Question> getQuestionsByAllTypes() {
         try {
-            // Fetch all questions for the specified type
-            List<Question> allQuestions = questionRepository.findByQuestionType(questionType);
 
-            if (allQuestions.isEmpty()) {
-                logger.warn("No questions found for type: {}", questionType);
-            } else {
-                logger.info("Successfully retrieved {} questions of type: {}", allQuestions.size(), questionType);
+            List<QuestionType> questionTypes = List.of(
+                    QuestionType.APTITUDE,
+                    QuestionType.LOGICAL_REASONING,
+                    QuestionType.CODE
+            );
+
+            List<Question> allSelectedQuestions = new ArrayList<>();
+
+            for (QuestionType type : questionTypes) {
+                List<Question> questionsByType = questionRepository.findByQuestionType(type);
+                Collections.shuffle(questionsByType); // Shuffle questions
+                List<Question> selectedQuestions = questionsByType.stream()
+                        .limit(15)
+                        .collect(Collectors.toList());
+                allSelectedQuestions.addAll(selectedQuestions);
             }
 
-            // Shuffle the list to randomize the order of questions
-            Collections.shuffle(allQuestions);
-
-            // Return the first 15 shuffled questions
-            return allQuestions.stream()
-                    .limit(15)  // Limit the number of questions to 15
-                    .collect(Collectors.toList());
+            logger.info("Successfully retrieved questions for all types. Total: {}", allSelectedQuestions.size());
+            return allSelectedQuestions;
 
         } catch (Exception e) {
-            logger.error("Error fetching questions of type: {}", questionType, e);
-            throw new RuntimeException("Error fetching questions of type: " + questionType, e);
+            logger.error("Error fetching questions for all types", e);
+            throw new RuntimeException("Error fetching questions for all types", e);
         }
     }
 
